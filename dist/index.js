@@ -6,7 +6,7 @@ const Staff_1 = require("./Staff");
 const ESC = '\u001B[', ERASE_LINE = ESC + '2K', CURSOR_UP = ESC + 'A', CURSOR_LEFT = ESC + 'G', CURSOR_HIDE = ESC + '?25l';
 let staff;
 staff = new Staff_1.Staff(MusicDefinitions_1.ClefType.Treble);
-//process.stdout.write(staff.getAscii().join('\n'))
+process.stdout.write(staff.getAscii().join('\n'));
 var thisIsATest = false;
 /*setInterval(() => {
   rewriteLines(staff.getAscii())

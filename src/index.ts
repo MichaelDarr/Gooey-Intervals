@@ -13,7 +13,7 @@ let staff: Staff
 
 staff = new Staff(ClefType.Treble)
 
-//process.stdout.write(staff.getAscii().join('\n'))
+process.stdout.write(staff.getAscii().join('\n'))
 
 var thisIsATest = false
 

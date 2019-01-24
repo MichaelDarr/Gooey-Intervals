@@ -18,6 +18,7 @@ class Staff {
     getAscii() {
         let musicArr;
         musicArr = this.getAsciiClef();
+        this.addNoteToStaff(musicArr);
         return musicArr;
     }
     getAsciiClef() {
@@ -107,6 +108,48 @@ class Staff {
                 throw 'No clef in staff object';
         }
     }
+    addNoteToStaff(staff) {
+        let middleOfStaff;
+        let finalNotePosition;
+        let staffExtension;
+        staffExtension =
+            [String.raw `            `,
+                String.raw `            `,
+                String.raw `            `,
+                String.raw `            `,
+                String.raw `            `,
+                String.raw `------------`,
+                String.raw `            `,
+                String.raw `------------`,
+                String.raw `            `,
+                String.raw `------------`,
+                String.raw `            `,
+                String.raw `------------`,
+                String.raw `            `,
+                String.raw `------------`,
+                String.raw `            `,
+                String.raw `            `,
+                String.raw `            `,
+                String.raw `            `,
+                String.raw `            `
+            ];
+        middleOfStaff = Math.floor(staff.length / 2);
+        finalNotePosition = middleOfStaff + this.notePosition;
+        if (this.notePosition % 2 == 0) {
+            if (Math.abs(this.notePosition) >= 6) {
+                staffExtension[finalNotePosition] = String.raw `  --(::)--  `;
+            }
+            else {
+                staffExtension[finalNotePosition] = String.raw `----(::)----`;
+            }
+        }
+        else {
+            staffExtension[finalNotePosition] = String.raw `    (::)    `;
+        }
+        for (var i = 0; i < staff.length; i++) {
+            staff[i] += staffExtension[i];
+        }
+    }
     //ASCII: A - G = 65 - 71
     getNoteName() {
         let noteRelativeNum;
@@ -114,7 +157,6 @@ class Staff {
         noteRelativeNum = this.noteIdentifier % 8;
         noteRelativeNum += 65;
         noteChar = String.fromCharCode(noteRelativeNum);
-        console.log(noteChar);
         return noteChar;
     }
 }
