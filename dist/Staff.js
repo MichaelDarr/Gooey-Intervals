@@ -1,24 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const MusicDefinitions_1 = require("./MusicDefinitions");
+const Note_1 = require("./Note");
 class Staff {
     constructor(clefType) {
         this.clefType = clefType;
-        this.notePosition = 0;
-        switch (clefType) {
-            case (MusicDefinitions_1.ClefType.Treble):
-                this.noteIdentifier = 17;
-                break;
-            case (MusicDefinitions_1.ClefType.Bass):
-                this.noteIdentifier = 19;
-                break;
-        }
-        this.getNoteName();
+        this.notes = [];
+        this.notes;
+        this.notes[0] = new Note_1.Note(clefType);
     }
     getAscii() {
         let musicArr;
         musicArr = this.getAsciiClef();
-        this.addNoteToStaff(musicArr);
+        this.addNotesToStaff(musicArr);
         return musicArr;
     }
     getAsciiClef() {
@@ -26,7 +20,11 @@ class Staff {
             case (MusicDefinitions_1.ClefType.Treble):
                 return (
                 //     ID    Position
-                [String.raw `            ` // D   26    9
+                [String.raw `            ` // F   28    11
+                    ,
+                    String.raw `            ` // E   27    10
+                    ,
+                    String.raw `            ` // D   26    9
                     ,
                     String.raw `            ` // C   25    8
                     ,
@@ -63,11 +61,19 @@ class Staff {
                     String.raw `            ` // A   9     -8
                     ,
                     String.raw `            ` // G   8     -9
+                    ,
+                    String.raw `            ` // A   7     -10
+                    ,
+                    String.raw `            ` // G   6     -11
                 ]);
             case (MusicDefinitions_1.ClefType.Bass):
                 return (
                 //     ID    Position
-                [String.raw `            ` // F   28    9
+                [String.raw `            ` // F   30    11
+                    ,
+                    String.raw `            ` // E   29    10
+                    ,
+                    String.raw `            ` // F   28    9
                     ,
                     String.raw `            ` // E   27    8
                     ,
@@ -104,13 +110,15 @@ class Staff {
                     String.raw `            ` // C   11    -8
                     ,
                     String.raw `            ` // B   10    -9
+                    ,
+                    String.raw `            ` // A   9    -10
+                    ,
+                    String.raw `            ` // G   8    -11
                 ]);
                 throw 'No clef in staff object';
         }
     }
-    addNoteToStaff(staff) {
-        let middleOfStaff;
-        let finalNotePosition;
+    addNotesToStaff(staff) {
         let staffExtension;
         staffExtension =
             [String.raw `            `,
@@ -118,7 +126,7 @@ class Staff {
                 String.raw `            `,
                 String.raw `            `,
                 String.raw `            `,
-                String.raw `------------`,
+                String.raw `            `,
                 String.raw `            `,
                 String.raw `------------`,
                 String.raw `            `,
@@ -127,37 +135,28 @@ class Staff {
                 String.raw `------------`,
                 String.raw `            `,
                 String.raw `------------`,
+                String.raw `            `,
+                String.raw `------------`,
+                String.raw `            `,
+                String.raw `            `,
                 String.raw `            `,
                 String.raw `            `,
                 String.raw `            `,
                 String.raw `            `,
                 String.raw `            `
             ];
-        middleOfStaff = Math.floor(staff.length / 2);
-        finalNotePosition = middleOfStaff + this.notePosition;
-        if (this.notePosition % 2 == 0) {
-            if (Math.abs(this.notePosition) >= 6) {
-                staffExtension[finalNotePosition] = String.raw `  --(::)--  `;
-            }
-            else {
-                staffExtension[finalNotePosition] = String.raw `----(::)----`;
-            }
-        }
-        else {
-            staffExtension[finalNotePosition] = String.raw `    (::)    `;
+        for (var i = 0; i < this.notes.length; i++) {
+            this.notes[i].addNoteToStaff(staffExtension);
         }
         for (var i = 0; i < staff.length; i++) {
             staff[i] += staffExtension[i];
         }
     }
-    //ASCII: A - G = 65 - 71
-    getNoteName() {
-        let noteRelativeNum;
-        let noteChar;
-        noteRelativeNum = this.noteIdentifier % 8;
-        noteRelativeNum += 65;
-        noteChar = String.fromCharCode(noteRelativeNum);
-        return noteChar;
+    moveNoteUp() {
+        this.notes[this.notes.length - 1].moveUp();
+    }
+    moveNoteDown() {
+        this.notes[this.notes.length - 1].moveDown();
     }
 }
 exports.Staff = Staff;

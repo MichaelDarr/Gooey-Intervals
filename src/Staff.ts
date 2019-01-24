@@ -1,24 +1,16 @@
-import {ClefType, Note} from './MusicDefinitions'
+import {ClefType} from './MusicDefinitions'
+import {Note} from './Note'
 
 export class Staff {
 
-  noteIdentifier: number
-  notePosition: number
+  notes: Note[] = []
 
   constructor(public clefType: ClefType) {
 
-    this.notePosition = 0
+    this.notes
 
-    switch(clefType) {
-      case(ClefType.Treble):
-        this.noteIdentifier = 17
-        break
-      case(ClefType.Bass):
-        this.noteIdentifier = 19
-        break
-    }
+    this.notes[0] = new Note(clefType)
 
-    this.getNoteName()
   }
 
   getAscii(): string[] {
@@ -26,7 +18,7 @@ export class Staff {
 
     musicArr = this.getAsciiClef()
 
-    this.addNoteToStaff(musicArr)
+    this.addNotesToStaff(musicArr)
 
     return musicArr
   }
@@ -36,7 +28,9 @@ export class Staff {
       case(ClefType.Treble):
         return(
                                      //     ID    Position
-          [ String.raw`            ` // D   26    9
+          [ String.raw`            ` // F   28    11
+          , String.raw`            ` // E   27    10
+          , String.raw`            ` // D   26    9
           , String.raw`            ` // C   25    8
           , String.raw`            ` // B   24    7
           , String.raw`      |\    ` // A   23    6
@@ -55,13 +49,17 @@ export class Staff {
           , String.raw`            ` // B   10    -7
           , String.raw`            ` // A   9     -8
           , String.raw`            ` // G   8     -9
+          , String.raw`            ` // A   7     -10
+          , String.raw`            ` // G   6     -11
           ]
         )
 
       case(ClefType.Bass):
         return(
                                      //     ID    Position
-          [ String.raw`            ` // F   28    9
+          [ String.raw`            ` // F   30    11
+          , String.raw`            ` // E   29    10
+          , String.raw`            ` // F   28    9
           , String.raw`            ` // E   27    8
           , String.raw`            ` // D   26    7
           , String.raw`            ` // C   25    6
@@ -80,6 +78,8 @@ export class Staff {
           , String.raw`            ` // D   12    -7
           , String.raw`            ` // C   11    -8
           , String.raw`            ` // B   10    -9
+          , String.raw`            ` // A   9    -10
+          , String.raw`            ` // G   8    -11
           ]
         )
 
@@ -87,9 +87,7 @@ export class Staff {
     }
   }
 
-  addNoteToStaff(staff: string[]): void {
-    let middleOfStaff: number
-    let finalNotePosition: number
+  addNotesToStaff(staff: string[]): void {
     let staffExtension: string[]
 
     staffExtension =
@@ -98,7 +96,7 @@ export class Staff {
       , String.raw`            `
       , String.raw`            `
       , String.raw`            `
-      , String.raw`------------`
+      , String.raw`            `
       , String.raw`            `
       , String.raw`------------`
       , String.raw`            `
@@ -107,6 +105,10 @@ export class Staff {
       , String.raw`------------`
       , String.raw`            `
       , String.raw`------------`
+      , String.raw`            `
+      , String.raw`------------`
+      , String.raw`            `
+      , String.raw`            `
       , String.raw`            `
       , String.raw`            `
       , String.raw`            `
@@ -114,19 +116,8 @@ export class Staff {
       , String.raw`            `
       ]
 
-    middleOfStaff = Math.floor(staff.length / 2)
-    finalNotePosition = middleOfStaff + this.notePosition
-
-    if(this.notePosition % 2 == 0) {
-      if(Math.abs(this.notePosition) >= 6) {
-        staffExtension[finalNotePosition] = String.raw`  --(::)--  `
-      }
-      else {
-        staffExtension[finalNotePosition] = String.raw`----(::)----`
-      }
-    }
-    else {
-      staffExtension[finalNotePosition] = String.raw`    (::)    `
+    for(var i = 0; i < this.notes.length; i++) {
+      this.notes[i].addNoteToStaff(staffExtension)
     }
 
     for(var i = 0; i < staff.length; i++) {
@@ -134,16 +125,12 @@ export class Staff {
     }
   }
 
-  //ASCII: A - G = 65 - 71
-  getNoteName(): string {
-    let noteRelativeNum: number
-    let noteChar: string
-
-    noteRelativeNum = this.noteIdentifier % 8
-    noteRelativeNum += 65
-
-    noteChar = String.fromCharCode(noteRelativeNum)
-
-    return noteChar
+  moveNoteUp(): void {
+    this.notes[this.notes.length - 1].moveUp()
   }
+
+  moveNoteDown(): void {
+    this.notes[this.notes.length - 1].moveDown()
+  }
+
 }
