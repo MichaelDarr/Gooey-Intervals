@@ -3,3 +3,13 @@ export enum ClefType
   , Bass
   , C
   }
+
+export enum Note
+  { A
+  , B
+  , C
+  , D
+  , E
+  , F
+  , G
+  }
