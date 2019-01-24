@@ -1,0 +1,19 @@
+{
+  "name": "gooey-intervals",
+  "version": "1.0.0",
+  "description": "Find music intervals with node",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MichaelDarr/Gooey-Intervals.git"
+  },
+  "author": "Michael Darr",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MichaelDarr/Gooey-Intervals/issues"
+  },
+  "homepage": "https://github.com/MichaelDarr/Gooey-Intervals#readme"
+}
