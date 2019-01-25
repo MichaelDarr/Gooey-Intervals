@@ -17,10 +17,26 @@ stdin.on('data', function (key) {
         case '\u0003':
             process.exit();
         case '\u001b[A':
-            staff.moveNoteUp();
+            staff.keystrokeUp();
             break;
         case '\u001b[B':
-            staff.moveNoteDown();
+            staff.keystrokeDown();
+            break;
+        case '\u001b[C':
+            staff.keystrokeLeft();
+            break;
+        case '\u001b[D':
+            staff.keystrokeRight();
+            break;
+        case '\r':
+            staff.keystrokeEnter();
+            break;
+        case 't':
+            staff = new Staff_1.Staff(MusicDefinitions_1.ClefType.Treble);
+            break;
+        case 'b':
+            staff = new Staff_1.Staff(MusicDefinitions_1.ClefType.Bass);
+            break;
     }
 });
 setInterval(() => {
